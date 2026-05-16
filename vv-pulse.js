@@ -1,4 +1,4 @@
-// ================================================================
+﻿// ================================================================
 // VV PULSE — Combined Bundle
 // vv-mood.js + vvscout.js + vv-pulse-app.js + founder patch
 // VV Technologies © 2026
@@ -1156,6 +1156,17 @@ window.onload = function() {
 };
 
 function toggleAcceptButton() {}
+
+function intraDirect() {
+    localStorage.setItem('vv_access_key', 'LEA_DEVICE');
+    var splash = document.getElementById('splash-screen');
+    var alias  = document.getElementById('alias-screen');
+    if (splash) splash.style.display = 'none';
+    if (alias)  alias.style.display  = 'flex';
+    if (!currentUser) {
+        try { auth.signInAnonymously().then(function(c){ currentUser = c.user; }).catch(function(){}); } catch(e) {}
+    }
+}
 
 function enterVVPulse() {
     var btn = document.getElementById('btn-accept');
