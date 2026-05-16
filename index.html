@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, 
+viewport-fit=cover">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050507">
+    <meta name="description" content="VV Pulse — Real-time field operations. Find missions, earn VV, stay anonymous.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-title" content="VV Pulse">
+    <title>VV Pulse</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ========== SPLASH SCREEN ========== -->
+<div id="splash-screen">
+
+    <!-- ── HERO SECTION ── -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 0 32px;">
+
+        <!-- Logo VV principal -->
+        <div style="position:relative;margin-bottom:16px;">
+            <!-- Glow subtil în spate -->
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;back
+ground:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+            <div style="font-size:86px;font-weight:900;color:#fff;letter-spacing:12px;padding-left:12px;line-height:1;f
+ont-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;">VV</div>
+        </div>
+
+        <!-- Tagline principal -->
+        <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:3px;text-transform:upper
+case;margin-bottom:10px;">A hybrid experience</div>
+
+        <!-- VV Beta byline -->
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 
+14px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34c759;box-shadow:0 0 6px 
+rgba(52,199,89,0.8);"></div>
+            <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2px;">by VV 
+Beta</span>
+        </div>
+    </div>
+
+    <!-- ── ACORD DE UTILIZARE — compact, scrollabil ── -->
+    <div style="
+        width:100%;
+        background:rgba(255,255,255,0.03);
+        border:0.5px solid rgba(255,255,255,0.08);
+        border-radius:20px 20px 0 0;
+        padding:20px 20px 0;
+        max-height:42vh;
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none;
+    ">
+        <!-- Header acord -->
+        <div style="text-align:center;margin-bottom:16px;">
+            <div 
+style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:3px;margin-bottom:4px;">ACORD DE 
+UTILIZARE</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);line-height:1.5;">Citește înainte de a intra în 
+ecosistemul VV.</div>
+        </div>
+
+        <!-- Articole — compact -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+
+            <div style="display:flex;gap:10px;padding:12px;background:rgba(255,255,255,0.03);border-radius:12px;">
+                <div style="font-size:16px;flex-shrink:0;margin-top:1px;">📸</div>
+                <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">Doar realitate 
+live</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Fără filtre, fără galerie. Tot 
+conținutul trebuie capturat live, la fața locului.</div></div>
+            </div>
+
+            <div style="display:flex;gap:10px;padding:12px;background:rgba(255,255,255,0.03);border-radius:12px;">
+                <div style="font-size:16px;flex-shrink:0;margin-top:1px;">🛡</div>
+                <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">Respect & 
+Intimitate</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Ești 100% responsabil. 
+Interzisă fotografierea persoanelor fără consimțământ.</div></div>
+            </div>
+
+            <div style="display:flex;gap:10px;padding:12px;background:rgba(255,255,255,0.03);border-radius:12px;">
+                <div style="font-size:16px;flex-shrink:0;margin-top:1px;">⚡</div>
+                <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">Toleranță zero 
+fraudă</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Orice fraudă = ban permanent pe 
+dispozitiv și anularea balanței VV.</div></div>
+            </div>
+
+            <div style="display:flex;gap:10px;padding:12px;background:rgba(255,255,255,0.03);border-radius:12px;">
+                <div style="font-size:16px;flex-shrink:0;margin-top:1px;">📍</div>
+                <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">VV Pulse — GPS 
+anonim</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Detectare proximitate ~50m. 
+Coordonate rotunjite, șterse după 90s. Opt-in manual.</div></div>
+            </div>
+
+            <div style="display:flex;gap:10px;padding:12px;background:rgba(255,255,255,0.03);border-radius:12px;">
+                <div style="font-size:16px;flex-shrink:0;margin-top:1px;">⬡</div>
+                <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">VV Coins — puncte 
+interne</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Nu sunt monedă electronică. 
+Sistem de loialitate intern, exclusiv Beta.</div></div>
+            </div>
+
+            <div style="display:flex;gap:10px;padding:12px;background:rgba(255,255,255,0.03);border-radius:12px;">
+                <div style="font-size:16px;flex-shrink:0;margin-top:1px;">🔞</div>
+                <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">Vârsta minimă 18 
+ani</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Prin continuare confirmi că ai 
+minimum 18 ani. VV Charter Art. 8.</div></div>
+            </div>
+
+            <div style="display:flex;gap:10px;padding:12px;background:rgba(255,255,255,0.03);border-radius:12px;">
+                <div style="font-size:16px;flex-shrink:0;margin-top:1px;">⚖️</div>
+                <div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">GDPR & DSA</div><div 
+style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Conform Reg. UE 679/2016 și DSA. VVTeam — 
+intermediar tehnic (Safe Harbor).</div></div>
+            </div>
+        </div>
+
+        <!-- Gradient fade bottom -->
+        <div style="height:24px;background:linear-gradient(transparent,rgba(0,0,0,0.8));margin:0 
+-20px;pointer-events:none;"></div>
+    </div>
+
+    <!-- ── ACTIUNI — checkbox + cheie + buton ── -->
+    <div style="width:100%;background:#000;padding:16px 20px calc(16px + env(safe-area-inset-bottom,0px));">
+
+        <!-- Checkbox acord -->
+        <label style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;cursor:pointer;padding:12px 
+14px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;">
+            <input type="checkbox" id="tc-checkbox" class="custom-checkbox" 
+style="margin-top:2px;flex-shrink:0;width:18px;height:18px;accent-color:#fff;cursor:pointer;">
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;">Am citit și accept acordul de 
+utilizare VV. Confirm că am <strong style="color:rgba(255,255,255,0.75);">minimum 18 ani</strong> și îmi asum 
+responsabilitatea legală.</span>
+        </label>
+
+        <!-- Input cheie -->
+        <div style="position:relative;margin-bottom:12px;">
+            <input type="text" class="key-input" id="access-key"
+                placeholder="CHEIE DE ACCES"
+                style="width:100%;background:rgba(255,255,255,0.06);border:0.5px solid 
+rgba(255,255,255,0.12);border-radius:14px;padding:15px 18px;color:#fff;font-size:15px;font-family:-apple-system,monospa
+ce;letter-spacing:2px;outline:none;-webkit-appearance:none;text-transform:uppercase;">
+        </div>
+
+        <!-- Buton principal -->
+        <button class="btn-main" id="btn-accept"
+            
+onclick="try{startBootSequence();}catch(e){document.getElementById('key-error-msg-fallback').textContent='Eroare: 
+'+e.message;document.getElementById('key-error-msg-fallback').style.display='block';}"
+            style="width:100%;padding:17px;background:rgba(255,255,255,0.95);color:#000;border:none;border-radius:16px;
+font-size:15px;font-weight:800;letter-spacing:0.5px;cursor:pointer;font-family:-apple-system,sans-serif;min-height:54px
+;-webkit-appearance:none;transition:opacity .15s;">
+            Intră în VV
+        </button>
+
+        <div id="key-error-msg-fallback" style="display:none;color:#ff3b30;font-size:12px;text-align:center;margin-top:
+10px;padding:10px;background:rgba(255,59,48,0.08);border:0.5px solid rgba(255,59,48,0.2);border-radius:10px;"></div>
+
+        <!-- Legal footer -->
+        <div style="text-align:center;margin-top:14px;">
+            <span style="font-size:10px;color:rgba(255,255,255,0.15);line-height:1.6;">VV · A hybrid experience by VV 
+Beta<br>GDPR · DSA · © 2026 VV Technologies</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========== ALIAS SCREEN ========== -->
+<div id="alias-screen" style="display:none;">
+    <div class="vv-massive-logo" style="font-size:60px;margin-bottom:12px;">VV</div>
+    <div class="splash-title">CREARE IDENTITATE INSIDER</div>
+    <input type="text" class="key-input" id="user-alias-input" placeholder="NUMELE DE COD" style="margin-bottom:20px;">
+    <button class="btn-main" onclick="confirmAlias()">CONFIRMĂ IDENTITATEA INSIDER</button>
+</div>
+
+<!-- ========== TUTORIAL SCREEN ========== -->
+<div id="tutorial-screen" style="display:none;">
+    <div class="tutorial-card active" id="tut-1">
+        <i class="fas fa-satellite-dish tut-icon"></i>
+        <h2>Radarul și Harta</h2>
+        <p>Harta urbană îți arată poziția exactă în timp real. Activează Radarul pentru a scana zona și a vedea 
+contractele active.</p>
+        <button class="btn-main" onclick="nextTutorial(2)">Continuă</button>
+    </div>
+    <div class="tutorial-card" id="tut-2">
+        <i class="fas fa-crosshairs tut-icon"></i>
+        <h2>Bursa de Contracte</h2>
+        <p>Caută o adresă sau apasă pe hartă pentru a lansa un contract cu recompensă VV. Sau deschide lista de 
+misiuni și fii primul care acceptă.</p>
+        <button class="btn-main" onclick="nextTutorial(3)">Continuă</button>
+    </div>
+    <div class="tutorial-card" id="tut-3">
+        <i class="fas fa-camera tut-icon"></i>
+        <h2>Camera VV PROOF</h2>
+        <p>Galeria foto este blocată. Singurul mod de a trimite dovezi este camera VV, care aplică automat un 
+watermark securizat cu data și ora exactă.</p>
+        <button class="btn-main" onclick="nextTutorial(4)">Continuă</button>
+    </div>
+    <div class="tutorial-card" id="tut-4">
+        <i class="fas fa-wallet tut-icon"></i>
+        <h2>VV Coins</h2>
+        <p>Fiecare misiune aprobată adaugă VV Coins în contul tău. Acumulează VV pentru a debloca ONYX sau pentru 
+conversie la lansarea oficială.</p>
+        <button class="btn-main" onclick="finishTutorial()">ÎNCEPE MISIUNEA</button>
+    </div>
+</div>
+
+<!-- ========== APP CONTAINER ========== -->
+<div id="app-container" style="display:none;">
+
+    <!-- MAP VIEW -->
+    <div id="map-view">
+        <div id="map"></div>
+        <div class="stealth-hud">
+            <div class="hud-left">
+                <div class="glass-pill">
+                    <div class="vv-dot"></div>
+                    <span style="color:rgba(255,255,255,0.5);">VV</span> BETA
+                </div>
+            </div>
+            <div class="hud-right">
+                <div class="glass-pill" id="hud-balance">— VV</div>
+            </div>
+        </div>
+
+        <div class="vv-search-container" id="vv-search-container">
+            <div class="vv-search-bar">
+                <i class="fas fa-search vv-search-icon"></i>
+                <input type="text" class="vv-search-input" id="vv-search-input" placeholder="Caută o adresă sau 
+locație..." autocomplete="off" autocorrect="off" spellcheck="false">
+                <button class="vv-search-clear" id="vv-search-clear" onclick="clearSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="vv-search-results" id="vv-search-results"></div>
+            <div class="vv-search-loading" id="vv-search-loading">SE CAUTĂ...</div>
+        </div>
+
+        <!-- INSIDER SEARCH OVERLAY -->
+        <div id="insider-search-bar" 
+style="display:none;position:fixed;inset:0;z-index:9000;justify-content:center;align-items:center;">
+            <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop
+-filter:blur(8px);"></div>
+            <div style="position:relative;z-index:1;background:rgba(8,8,14,0.97);backdrop-filter:blur(30px);-webkit-bac
+kdrop-filter:blur(30px);border:1px solid rgba(255,255,255,0.1);border-radius:28px;padding:40px 32px 
+32px;width:85%;max-width:320px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.7);">
+                <div style="position:relative;width:80px;height:80px;margin:0 auto 24px;">
+                    <div 
+style="position:absolute;inset:0;border-radius:50%;background:rgba(255,255,255,0.04);animation:radarPulse1 2s 
+infinite;"></div>
+                    <div 
+style="position:absolute;inset:10px;border-radius:50%;background:rgba(255,255,255,0.06);animation:radarPulse2 2s 
+infinite .3s;"></div>
+                    <div 
+style="position:absolute;inset:20px;border-radius:50%;background:rgba(255,255,255,0.08);animation:radarPulse3 2s 
+infinite .6s;"></div>
+                    <div style="position:absolute;inset:28px;border-radius:50%;background:rgba(255,255,255,0.9);display
+:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(255,255,255,0.3);">
+                        <i class="fas fa-satellite-dish" style="font-size:12px;color:#000;"></i>
+                    </div>
+                </div>
+                <div id="insider-search-text" 
+style="font-size:15px;font-weight:900;color:#fff;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;">SE 
+CAUTĂ INSIDER...</div>
+                <div id="insider-count-text" style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">Se 
+scanează rețeaua...</div>
+                <div 
+style="background:rgba(255,255,255,0.06);border-radius:10px;height:3px;overflow:hidden;margin-bottom:20px;">
+                    <div style="height:100%;border-radius:10px;background:rgba(255,255,255,0.1);width:35%;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:6px;height:6px;background:#34c759;border-radius:50%;box-shadow:0 0 6px 
+#34c759;animation:pulseDot 1.5s infinite;"></div>
+                        <span style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;">VV NETWORK</span>
+                    </div>
+                    <span id="insider-reward-text" style="font-size:13px;color:#fff;font-weight:900;">— VV</span>
+                </div>
+                <div onclick="cancelFromSearchOverlay();" 
+style="margin-top:20px;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-ra
+dius:12px;font-size:12px;color:rgba(255,255,255,0.3);cursor:pointer;font-weight:600;letter-spacing:1px;">ANULEAZĂ</div>
+            </div>
+        </div>
+
+        <div class="action-sidebar" id="action-hub">
+            <div class="fab-btn fab-mission-launch" onclick="openMissionsList()"><i class="fas fa-list-ul"></i></div>
+            <div class="fab-btn" onclick="openInbox()">
+                <i class="fas fa-envelope"></i>
+                <div class="inbox-badge" id="inbox-badge" style="display:none;">0</div>
+            </div>
+            <div class="fab-btn fab-cam" onclick="handleCameraOpen()"><i class="fas fa-camera"></i></div>
+        </div>
+    </div>
+
+    <!-- PROFILE VIEW -->
+    <div id="profile-screen" style="display:none;">
+        <div class="profile-header">
+            <div class="profile-title" id="profile-main-name" style="display:flex;align-items:center;">INSIDER</div>
+            <div class="settings-icon" onclick="openSettings()"><i class="fas fa-fingerprint"></i></div>
+        </div>
+
+        <!-- HERO CARD balanta -->
+        <div 
+style="background:rgba(255,255,255,0.04);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px 
+solid rgba(255,255,255,0.08);border-radius:24px;padding:32px 
+24px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:200px;height:200px;backgr
+ound:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+            <div 
+style="font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:4px;margin-bottom:16px;font-weight:700;">VV 
+COINS</div>
+            <div style="font-size:56px;font-weight:900;color:#fff;line-height:1;margin-bottom:6px;"><span 
+id="profile-vv-val">—</span></div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:2px;">VV</div>
+            <span id="profile-lei-val" style="display:none;">—</span>
+        </div>
+
+        <!-- FOUNDER CARD — injectat dinamic de JS când isFounder=true -->
+        <!-- #vv-founder-card se inserează aici -->
+
+        <!-- INTELLIGENCE INBOX -->
+        <div style="background:rgba(10,132,255,0.05);border:1px solid 
+rgba(10,132,255,0.15);border-radius:20px;padding:18px 
+20px;margin-bottom:16px;cursor:pointer;position:relative;overflow:hidden;" onclick="openInbox()">
+            <div style="position:absolute;top:0;left:15%;right:15%;height:2px;background:linear-gradient(90deg,transpar
+ent,#0A84FF,transparent);"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div style="width:32px;height:32px;background:rgba(10,132,255,0.15);border:1px solid 
+rgba(10,132,255,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                        <i class="fas fa-satellite-dish" style="color:#0A84FF;font-size:13px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:13px;font-weight:800;color:#fff;letter-spacing:.5px;">INTELLIGENCE 
+INBOX</div>
+                        <div style="font-size:10px;color:rgba(10,132,255,0.6);letter-spacing:1px;">MESAJE VV 
+SISTEM</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div id="intel-inbox-badge" style="display:none;background:#ff3b30;color:#fff;font-size:10px;font-w
+eight:800;min-width:20px;height:20px;border-radius:10px;align-items:center;justify-content:center;padding:0 
+6px;"></div>
+                    <i class="fas fa-chevron-right" style="color:rgba(10,132,255,0.4);font-size:12px;"></i>
+                </div>
+            </div>
+            <div id="intel-inbox-preview">
+                <div style="color:rgba(255,255,255,0.25);font-size:12px;text-align:center;padding:10px;">Niciun mesaj 
+primit încă.</div>
+            </div>
+        </div>
+
+        <!-- ONYX PROGRESS -->
+        <div id="onyx-progress-card" style="background:linear-gradient(135deg,rgba(212,175,55,0.06) 
+0%,rgba(212,175,55,0.02) 100%);border:1px solid 
+rgba(212,175,55,0.2);border-radius:18px;padding:20px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-gem" style="color:#D4AF37;font-size:14px;"></i>
+                    <span style="font-size:13px;font-weight:800;color:#D4AF37;letter-spacing:1px;">ONYX GRATUIT</span>
+                </div>
+                <span id="onyx-progress-label" style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;">— / 
+500 VV</span>
+            </div>
+            <div 
+style="background:rgba(255,255,255,0.06);border-radius:10px;height:8px;margin-bottom:12px;overflow:hidden;">
+                <div id="onyx-progress-bar" 
+style="height:100%;border-radius:10px;background:rgba(255,255,255,0.45);width:0%;transition:width .8s 
+cubic-bezier(0.16,1,0.3,1);box-shadow:0 0 8px rgba(212,175,55,0.4);"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+                <div id="milestone-500" style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:11px;color:rgba(255,255,255,0.45);">⬡ 500 VV → <strong 
+style="color:rgba(255,255,255,0.7);">1 lună ONYX</strong></span>
+                    <span id="check-500" style="font-size:11px;color:rgba(212,175,55,0.4);">—</span>
+                </div>
+                <div id="milestone-1000" style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:11px;color:rgba(255,255,255,0.45);">⬡ 1000 VV → <strong 
+style="color:rgba(255,255,255,0.7);">2 luni ONYX</strong></span>
+                    <span id="check-1000" style="font-size:11px;color:rgba(212,175,55,0.4);">—</span>
+                </div>
+                <div id="milestone-1500" style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:11px;color:rgba(255,255,255,0.45);">⬡ 1500 VV → <strong 
+style="color:rgba(255,255,255,0.7);">3 luni ONYX</strong></span>
+                    <span id="check-1500" style="font-size:11px;color:rgba(212,175,55,0.4);">—</span>
+                </div>
+            </div>
+            <div style="margin-top:14px;padding:12px;background:rgba(255,255,255,0.03);border:1px solid 
+rgba(255,255,255,0.06);border-radius:10px;">
+                <p style="font-size:11px;color:rgba(255,255,255,0.3);line-height:1.6;text-align:center;">⚠️ VV Coins 
+<strong style="color:rgba(255,255,255,0.5);">nu se convertesc în bani</strong>. Sunt folosiți exclusiv pentru 
+recompense în platformă. La VV 1.0 pot fi folosiți pentru abonamente gratuite ONYX.</p>
+            </div>
+        </div>
+
+        <!-- 4 BUTOANE PREMIUM -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid 
+rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;margin-bottom:16px;">
+            <div onclick="openModal('modal-leaderboard')" style="display:flex;align-items:center;gap:14px;padding:16px 
+20px;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;">
+                <div style="width:32px;height:32px;background:rgba(255,149,0,0.15);border-radius:8px;display:flex;align
+-items:center;justify-content:center;"><i class="fas fa-trophy" style="color:#ff9500;font-size:13px;"></i></div>
+                <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#fff;">Top Insideri</div><div 
+style="font-size:11px;color:rgba(255,255,255,0.35);">Clasamentul rețelei VV</div></div>
+                <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.15);font-size:12px;"></i>
+            </div>
+            <div onclick="openModal('modal-invites')" style="display:flex;align-items:center;gap:14px;padding:16px 
+20px;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;">
+                <div style="width:32px;height:32px;background:rgba(52,199,89,0.15);border-radius:8px;display:flex;align
+-items:center;justify-content:center;"><i class="fas fa-user-plus" style="color:#34c759;font-size:13px;"></i></div>
+                <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#fff;">Invită Prieteni</div><div 
+style="font-size:11px;color:rgba(255,255,255,0.35);">3 chei exclusive de acces</div></div>
+                <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.15);font-size:12px;"></i>
+            </div>
+            <div onclick="openModal('modal-future')" style="display:flex;align-items:center;gap:14px;padding:16px 
+20px;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;">
+                <div style="width:32px;height:32px;background:rgba(10,132,255,0.15);border-radius:8px;display:flex;alig
+n-items:center;justify-content:center;"><i class="fas fa-city" style="color:#0A84FF;font-size:13px;"></i></div>
+                <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#fff;">VV 1.0 — Coming 
+Soon</div><div style="font-size:11px;color:rgba(255,255,255,0.35);">Abonamente & Orașe noi</div></div>
+                <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.15);font-size:12px;"></i>
+            </div>
+            <div onclick="openModal('modal-support-career');setTimeout(function(){var 
+ta=document.getElementById('support-msg-input');if(ta)ta.value='';},50);" 
+style="display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;">
+                <div style="width:32px;height:32px;background:rgba(255,59,48,0.12);border-radius:8px;display:flex;align
+-items:center;justify-content:center;"><i class="fas fa-headset" style="color:#ff3b30;font-size:13px;"></i></div>
+                <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#fff;">Suport & 
+Carieră</div><div style="font-size:11px;color:rgba(255,255,255,0.35);">Ajutor & Join the Elite</div></div>
+                <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.15);font-size:12px;"></i>
+            </div>
+        </div>
+
+        <!-- VVhi CORE WIDGET -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid 
+rgba(255,255,255,0.08);border-radius:18px;padding:16px 20px;margin-bottom:16px;" id="vvhi-core-widget">
+            <div 
+style="font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:3px;font-weight:700;margin-bottom:6px;">VVhi 
+CORE</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.3);">Se încarcă...</div>
+        </div>
+
+        <!-- PULSE ECHO — Istoricul intersectiilor -->
+        <div style="background:rgba(10,132,255,0.04);border:1px solid 
+rgba(10,132,255,0.12);border-radius:18px;padding:16px 20px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div style="font-size:9px;color:rgba(10,132,255,0.6);letter-spacing:3px;font-weight:700;">PULSE ECHO · 
+INTERSECȚII</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.2);">Local</div>
+            </div>
+            <div id="pulse-echo-list">
+                <div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;padding:10px;">Nicio 
+intersecție înregistrată.</div>
+            </div>
+        </div>
+
+        <!-- BON DIGITAL — ISTORIC TRANZACTII -->
+        <div style="background:rgba(52,199,89,0.04);border:1px solid 
+rgba(52,199,89,0.12);border-radius:18px;padding:16px 20px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div style="font-size:9px;color:rgba(52,199,89,0.6);letter-spacing:3px;font-weight:700;">BON DIGITAL · 
+ISTORIC</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.2);">90 zile · GDPR</div>
+            </div>
+            <div id="user-transactions-list">
+                <div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;padding:10px;">Se 
+încarcă...</div>
+            </div>
+        </div>
+
+        <div style="text-align:center;padding-bottom:10px;">
+            <span style="font-size:11px;color:rgba(255,255,255,0.15);letter-spacing:1px;">© VV Technologies 2026</span>
+        </div>
+    </div>
+</div>
+
+<!-- ========== DOCK ========== -->
+<div class="stealth-dock" id="main-dock" style="display:none;">
+    <div class="dock-icon active" id="tab-map" onclick="switchTab('map')"><i class="fas fa-map"></i></div>
+    <!-- NEXUS — buton central dominant -->
+    <div id="nexus-dock-btn" onclick="openNexus()" style="
+        width:58px;height:58px;border-radius:50%;
+        background:rgba(255,255,255,0.95);
+        display:flex;align-items:center;justify-content:center;
+        flex-direction:column;gap:2px;
+        cursor:pointer;
+        box-shadow:0 0 0 6px rgba(255,255,255,0.08),0 8px 24px rgba(0,0,0,0.5);
+        margin-top:-16px;
+        flex-shrink:0;
+        -webkit-tap-highlight-color:transparent;
+        transition:transform .15s,box-shadow .15s;
+    " ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">
+        <span style="font-size:20px;color:#000;line-height:1;">⬡</span>
+        <span style="font-size:7px;color:#000;font-weight:900;letter-spacing:1px;line-height:1;">MISIUNE</span>
+    </div>
+    <div class="dock-icon" id="tab-mood" onclick="if(typeof VVMood!=='undefined')VVMood.openPanel(userCurrentLat,userCurrentLng)" style="position:relative;"><span style="font-size:19px;line-height:1;">😌</span></div>
+    <div class="dock-icon" id="tab-profile" onclick="switchTab('profile')"><i class="fas fa-user"></i></div>
+</div>
+
+<!-- ========== NEXUS MODAL ========== -->
+<div id="nexus-modal" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.85);backdrop-fil
+ter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:flex-end;justify-content:center;">
+    <div id="nexus-sheet" style="
+        width:100%;max-width:430px;
+        background:rgba(6,6,10,0.98);
+        border:1px solid rgba(255,255,255,0.1);
+        border-radius:28px 28px 0 0;
+        padding:24px 20px calc(28px + env(safe-area-inset-bottom,0px));
+        transform:translateY(100%);
+        transition:transform .4s cubic-bezier(0.16,1,0.3,1);
+    ">
+        <!-- Handle -->
+        <div style="width:36px;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 
+20px;"></div>
+
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <div style="width:40px;height:40px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)
+;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;">⬡</div>
+            <div>
+                <div style="font-size:16px;font-weight:800;color:#fff;letter-spacing:.5px;">NEXUS</div>
+                <div id="nexus-status-label" style="font-size:11px;color:rgba(255,255,255,0.3);">Ce vrei să afli 
+despre oraș?</div>
+            </div>
+            <div onclick="closeNexus()" style="margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,0.06
+);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.4);f
+ont-size:14px;">✕</div>
+        </div>
+
+        <!-- Input + Voice -->
+        <div style="position:relative;margin-bottom:14px;">
+            <textarea id="nexus-input" placeholder="Ex: E coadă la Kaufland? Terenul de fotbal e liber? Cum e zona 
+Lipscani acum?" style="
+                width:100%;min-height:80px;
+                background:rgba(255,255,255,0.05);
+                border:1px solid rgba(255,255,255,0.1);
+                border-radius:16px;
+                padding:14px 50px 14px 16px;
+                color:#fff;font-size:14px;
+                font-family:inherit;outline:none;
+                resize:none;line-height:1.6;
+                -webkit-appearance:none;
+            " oninput="nexusInputChange(this)"></textarea>
+            <!-- Buton microfon -->
+            <div id="nexus-mic-btn" onclick="toggleVoiceInput()" style="
+                position:absolute;right:10px;top:10px;
+                width:34px;height:34px;
+                background:rgba(255,255,255,0.06);
+                border:1px solid rgba(255,255,255,0.1);
+                border-radius:10px;
+                display:flex;align-items:center;justify-content:center;
+                cursor:pointer;font-size:15px;
+                -webkit-tap-highlight-color:transparent;
+                transition:all .2s;
+            " title="Vorbește cu Nexus">🎙</div>
+        </div>
+        <!-- Status voice -->
+        <div id="nexus-voice-status" style="display:none;font-size:11px;color:rgba(255,59,48,0.7);text-align:center;mar
+gin-bottom:10px;letter-spacing:1px;font-weight:600;">● ASCULTĂ...</div>
+
+        <!-- GPS status -->
+        <div id="nexus-gps-row" style="display:flex;align-items:center;gap:8px;padding:10px 
+14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:14px;">
+            <div id="nexus-gps-dot" 
+style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;"></div>
+            <div id="nexus-gps-text" style="font-size:11px;color:rgba(255,255,255,0.3);">GPS se activează când 
+trimiți</div>
+        </div>
+
+        <!-- Sugestii rapide -->
+        <div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px;scrollbar-width:none;" 
+id="nexus-suggestions">
+            <div onclick="nexusSuggest(this.textContent)" style="flex-shrink:0;padding:8px 
+14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;font-size:11px;color:
+rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;">🏪 Supermarket aproape</div>
+            <div onclick="nexusSuggest(this.textContent)" style="flex-shrink:0;padding:8px 
+14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;font-size:11px;color:
+rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;">⚽ Teren sport liber?</div>
+            <div onclick="nexusSuggest(this.textContent)" style="flex-shrink:0;padding:8px 
+14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;font-size:11px;color:
+rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;">🚗 Parcare disponibilă?</div>
+            <div onclick="nexusSuggest(this.textContent)" style="flex-shrink:0;padding:8px 
+14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;font-size:11px;color:
+rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;">☕ Cafenea liniștită</div>
+            <div onclick="nexusSuggest(this.textContent)" style="flex-shrink:0;padding:8px 
+14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;font-size:11px;color:
+rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;">🌆 Cum e zona acum?</div>
+        </div>
+
+        <!-- Buton principal -->
+        <button id="nexus-send-btn" onclick="submitNexus()" style="
+            width:100%;padding:16px;
+            background:rgba(255,255,255,0.95);
+            color:#000;border:none;border-radius:16px;
+            font-size:15px;font-weight:900;
+            font-family:inherit;cursor:pointer;
+            min-height:52px;letter-spacing:.5px;
+            transition:opacity .15s;
+            -webkit-tap-highlight-color:transparent;
+        ">⬡ LANSEAZĂ MISIUNEA</button>
+
+        <!-- Raspuns Nexus -->
+        <div id="nexus-response" style="display:none;margin-top:16px;background:rgba(255,255,255,0.04);border:1px 
+solid rgba(255,255,255,0.08);border-radius:16px;padding:16px;">
+            <div 
+style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:3px;font-weight:700;margin-bottom:10px;">NEXUS · 
+RĂSPUNS</div>
+            <div id="nexus-response-text" style="font-size:14px;color:#fff;line-height:1.7;"></div>
+            <div id="nexus-action-btns" 
+style="display:none;margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== FEED MODAL ========== -->
+<div id="feedModal" style="display:none;position:fixed;inset:0;z-index:100000;justify-content:center;align-items:center
+;background:rgba(0,0,0,0.75);backdrop-filter:blur(20px);">
+    <div style="background:rgba(12,12,16,0.98);border:1px solid rgba(255,255,255,0.1);padding:30px 
+24px;border-radius:22px;width:88%;max-width:360px;text-align:center;">
+        <div style="color:rgba(255,255,255,0.4);font-size:10px;letter-spacing:3px;margin-bottom:12px;">ÎN CURÂND</div>
+        <div style="color:#fff;font-size:18px;font-weight:900;margin-bottom:8px;letter-spacing:1px;">VV GLOBAL 
+FEED</div>
+        <div style="color:#0A84FF;font-size:13px;font-weight:700;margin-bottom:24px;letter-spacing:2px;">VV 1.0 — 
+COMING SOON</div>
+        <div style="color:rgba(255,255,255,0.45);font-size:13px;line-height:1.7;text-align:left;border-top:1px solid 
+rgba(255,255,255,0.06);padding-top:20px;margin-bottom:24px;">
+            <strong style="color:rgba(255,255,255,0.8);">GLOBAL FEED</strong><br>Atmosfera orașului în timp real. Fără 
+filtre, fără fake-uri. Pură realitate urbană.<br><br>
+            <strong style="color:rgba(255,255,255,0.8);">THE CITY VAULT</strong><br>Locații premium, evenimente 
+exclusive și misiuni oficiale cu recompense masive.
+        </div>
+        <button onclick="document.getElementById('feedModal').style.display='none';" 
+style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);padding:14p
+x;border-radius:12px;width:100%;font-weight:700;font-size:13px;letter-spacing:1px;cursor:pointer;">ÎNCHIDE</button>
+    </div>
+</div>
+
+<!-- ========== SHEET MODALS ========== -->
+<div class="sheet-modal" id="settings-modal">
+    <div class="sheet-content">
+        <h2>Setări Sistem</h2>
+        <div onclick="closeModal('settings-modal');openModal('regulament-modal');" 
+style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px 
+solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px;margin-bottom:10px;cursor:pointer;">
+            <div style="display:flex;align-items:center;gap:12px;"><i class="fas fa-file-alt" 
+style="color:rgba(255,255,255,0.5);font-size:16px;"></i><span 
+style="color:#fff;font-size:14px;font-weight:600;">Regulament Intern</span></div>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.2);"></i>
+        </div>
+        <div onclick="closeModal('settings-modal');openVVeilSettings();" 
+style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px 
+solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px;margin-bottom:10px;cursor:pointer;">
+            <div style="display:flex;align-items:center;gap:12px;"><i class="fas fa-shield-alt" 
+style="color:rgba(255,255,255,0.5);font-size:16px;"></i><div><div 
+style="color:#fff;font-size:14px;font-weight:600;">VVeil · Protecție Identitate</div><div id="vveil-status-label" 
+style="color:rgba(255,255,255,0.3);font-size:11px;margin-top:2px;">Se încarcă...</div></div></div>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.2);"></i>
+        </div>
+        <!-- GHOST MODE -->
+        <div id="ghost-mode-row" onclick="toggleGhostMode()" 
+style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px 
+solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px;margin-bottom:10px;cursor:pointer;">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span style="font-size:16px;">👁</span>
+                <div>
+                    <div style="color:#fff;font-size:14px;font-weight:600;">Ghost Mode</div>
+                    <div id="ghost-mode-label" 
+style="color:rgba(255,255,255,0.3);font-size:11px;margin-top:2px;">Invizibil pe VV Pulse · 30 min</div>
+                </div>
+            </div>
+            <div id="ghost-toggle" style="width:44px;height:26px;background:rgba(255,255,255,0.1);border-radius:13px;po
+sition:relative;flex-shrink:0;transition:background .2s;">
+                <div id="ghost-toggle-dot" style="width:20px;height:20px;background:rgba(255,255,255,0.4);border-radius
+:50%;position:absolute;left:3px;top:3px;transition:all .2s;"></div>
+            </div>
+        </div>
+        <div 
+style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px 
+solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:12px;"><i class="fas fa-moon" 
+style="color:rgba(255,255,255,0.5);font-size:16px;"></i><div><div 
+style="color:#fff;font-size:14px;font-weight:600;">Dark Mode</div><div 
+style="color:rgba(255,255,255,0.3);font-size:11px;margin-top:2px;">Activat · Blocat în VV Premium</div></div></div>
+            <div style="width:44px;height:26px;background:rgba(255,255,255,0.9);border-radius:13px;position:relative;fl
+ex-shrink:0;"><div 
+style="width:20px;height:20px;background:#000;border-radius:50%;position:absolute;right:3px;top:3px;"></div></div>
+        </div>
+        <button class="btn-launch" onclick="logoutAgent()" 
+style="background:rgba(255,59,48,0.1);color:#ff3b30;border:1px solid 
+rgba(255,59,48,0.25);margin-bottom:12px;">DECONECTARE</button>
+        <button class="btn-launch" style="background:transparent;color:rgba(255,255,255,0.4);border:1px solid 
+rgba(255,255,255,0.08);" onclick="closeModal('settings-modal')">ÎNCHIDE</button>
+    </div>
+</div>
+
+<div class="sheet-modal" id="regulament-modal">
+    <div class="sheet-content" style="max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <div class="sheet-handle"></div>
+        <h2 style="text-align:center;margin-bottom:4px;">Acordul de Utilizare</h2>
+        <div style="font-size:9px;color:rgba(212,175,55,0.7);letter-spacing:2px;text-align:center;margin-bottom:18px;fo
+nt-weight:700;">VV BETA · ADEVĂRUL ÎN TIMP REAL</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.8;">
+            <p style="margin-bottom:12px;"><strong style="color:#fff;">1. PURĂ REALITATE:</strong> Interzisă folosirea 
+filtrelor sau materialelor preînregistrate. Totul se face live.</p>
+            <p style="margin-bottom:12px;"><strong style="color:#fff;">2. RESPECTUL PENTRU INTIMITATE:</strong> Ești 
+100% responsabil. Interzisă fotografierea persoanelor fără consimțământ.</p>
+            <p style="margin-bottom:12px;"><strong style="color:#fff;">3. SIGURANȚA — PRIORITATEA ZERO:</strong> 
+Interzisă pătrunderea ilegală. VV nu răspunde pentru accidentări.</p>
+            <p style="margin-bottom:12px;"><strong style="color:#fff;">4. TOLERANȚĂ ZERO — FRAUDĂ:</strong> Orice 
+fraudă duce la ban permanent.</p>
+            <p style="margin-bottom:12px;"><strong style="color:#fff;">5. GDPR — TRANSPARENȚĂ:</strong> Principiul 
+„Aici și Acum". Datele procesate conform Reg. UE 679/2016.</p>
+            <p style="margin-bottom:12px;"><strong style="color:#fff;">6. VV COINS:</strong> Sistem intern Beta. Nu 
+constituie monedă electronică.</p>
+            <p style="margin-bottom:12px;"><strong style="color:#fff;">7. VV PULSE — DETECTARE PROXIMITATE:</strong> 
+GPS anonimizat pentru detectarea Insiderilor în raza de ~50m. Coordonate rotunjite, șterse după 90 secunde. Activare 
+manuală, opt-in, max 3/zi. Conform GDPR · UE 679/2016.</p>
+            <p style="margin-bottom:20px;"><strong style="color:#fff;">8. JURISDICȚIE:</strong> Legislația română și 
+DSA al UE. VVTeam — intermediar tehnic (Safe Harbor).</p>
+        </div>
+        <button class="btn-launch" style="background:transparent;color:rgba(255,255,255,0.4);border:1px solid 
+rgba(255,255,255,0.08);" onclick="closeModal('regulament-modal')">ÎNCHIDE</button>
+    </div>
+</div>
+
+<div class="sheet-modal" id="create-mission-modal">
+    <div class="sheet-content">
+        <h2>Lansează Contract</h2>
+        <input type="text" id="mission-desc" class="vv-input" style="margin-bottom:20px;" placeholder="Ex: Cum e coada 
+la club X?">
+        <div class="reward-group">
+            <div class="reward-btn" id="rew-btn-5" onclick="selectReward(5)">5 VV</div>
+            <div class="reward-btn active" id="rew-btn-15" onclick="selectReward(15)">15 VV</div>
+            <div class="reward-btn" id="rew-btn-25" onclick="selectReward(25)">25 VV</div>
+        </div>
+        <div id="reward-info-bar" style="display:none;font-size:11px;color:rgba(255,255,255,0.35);padding:10px 
+14px;background:rgba(255,255,255,0.03);border:1px solid 
+rgba(255,255,255,0.06);border-radius:10px;margin-bottom:16px;line-height:1.6;"></div>
+        <button class="btn-launch" id="btn-launch-radar" onclick="submitPinpointMission()" 
+style="margin-bottom:12px;">LANSEAZĂ CONTRACTUL</button>
+        <button class="btn-launch" style="background:transparent;color:rgba(255,255,255,0.4);border:1px solid 
+rgba(255,255,255,0.08);" onclick="closeModal('create-mission-modal')">ANULEAZĂ</button>
+    </div>
+</div>
+
+<div class="sheet-modal" id="missions-list-modal">
+    <div class="sheet-content">
+        <h2>Bursa de Misiuni</h2>
+        <div id="missions-container" style="max-height:360px;overflow-y:auto;margin-bottom:16px;"></div>
+        <button class="btn-launch" style="background:transparent;color:rgba(255,255,255,0.4);border:1px solid 
+rgba(255,255,255,0.08);" onclick="closeModal('missions-list-modal')">ÎNCHIDE</button>
+    </div>
+</div>
+
+<div class="sheet-modal" id="inbox-modal">
+    <div class="sheet-content">
+        <h2>Intel Primit</h2>
+        <div id="inbox-container" style="max-height:400px;overflow-y:auto;margin-bottom:16px;"></div>
+        <button class="btn-launch" style="background:transparent;color:rgba(255,255,255,0.4);border:1px solid 
+rgba(255,255,255,0.08);" onclick="closeModal('inbox-modal')">ÎNCHIDE</button>
+    </div>
+</div>
+
+<!-- PREMIUM FEEDBACK MODAL -->
+<div id="premium-feedback-modal" style="display:none;position:fixed;inset:0;z-index:999998;align-items:flex-end;justify
+-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);">
+    <div id="pfm-box" style="width:100%;max-width:430px;background:rgba(18,18,22,0.92);backdrop-filter:blur(30px);-webk
+it-backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,0.1);border-radius:28px 28px 0 0;padding:32px 24px 
+44px;transform:translateY(100%);transition:transform .4s cubic-bezier(0.16,1,0.3,1);">
+        <div style="width:36px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 
+28px;"></div>
+        <div style="text-align:center;margin-bottom:8px;">
+            <div id="pfm-insider-name" 
+style="font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.35);margin-bottom:6px;">INSIDER</div>
+            <div style="font-size:17px;font-weight:800;color:#fff;letter-spacing:.5px;">Cum a fost misiunea?</div>
+        </div>
+        <div style="text-align:center;margin-bottom:28px;"><div id="pfm-mission-name" 
+style="font-size:12px;color:rgba(255,255,255,0.35);"></div></div>
+        <div style="text-align:center;margin-bottom:32px;">
+            <div 
+style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.3);margin-bottom:14px;">ACURATEȚE</div>
+            <div id="star-container" style="display:flex;justify-content:center;gap:12px;">
+                <span class="vv-star" data-val="1" onclick="selectStar(1)" 
+style="font-size:32px;cursor:pointer;transition:all .15s;filter:grayscale(1) opacity(0.3);">★</span>
+                <span class="vv-star" data-val="2" onclick="selectStar(2)" 
+style="font-size:32px;cursor:pointer;transition:all .15s;filter:grayscale(1) opacity(0.3);">★</span>
+                <span class="vv-star" data-val="3" onclick="selectStar(3)" 
+style="font-size:32px;cursor:pointer;transition:all .15s;filter:grayscale(1) opacity(0.3);">★</span>
+                <span class="vv-star" data-val="4" onclick="selectStar(4)" 
+style="font-size:32px;cursor:pointer;transition:all .15s;filter:grayscale(1) opacity(0.3);">★</span>
+                <span class="vv-star" data-val="5" onclick="selectStar(5)" 
+style="font-size:32px;cursor:pointer;transition:all .15s;filter:grayscale(1) opacity(0.3);">★</span>
+            </div>
+        </div>
+        <div style="width:100%;height:1px;background:rgba(255,255,255,0.06);margin-bottom:24px;"></div>
+        <div style="margin-bottom:8px;">
+            <div 
+style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:14px;">TIP</div>
+            <div style="display:flex;gap:10px;justify-content:center;">
+                <button id="tip-vv-3" onclick="selectTipPremium(3)" style="flex:1;padding:16px 
+8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;color:rgba(255,255,255
+,0.5);font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:.5px;">3 
+VV</button>
+                <button id="tip-vv-6" onclick="selectTipPremium(6)" style="flex:1;padding:16px 
+8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;color:rgba(255,255,255
+,0.5);font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:.5px;">6 
+VV</button>
+                <button id="tip-vv-9" onclick="selectTipPremium(9)" style="flex:1;padding:16px 
+8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;color:rgba(255,255,255
+,0.5);font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:.5px;">9 
+VV</button>
+            </div>
+        </div>
+        <button id="pfm-confirm-btn" onclick="submitPremiumFeedback()" style="width:100%;margin-top:20px;padding:17px;b
+ackground:rgba(255,255,255,0.92);color:#000;border:none;border-radius:14px;font-size:14px;font-weight:800;letter-spacin
+g:1px;cursor:pointer;transition:all .2s;font-family:inherit;">CONFIRMĂ</button>
+        <button onclick="closePremiumFeedback()" style="width:100%;margin-top:12px;padding:14px;background:transparent;
+color:rgba(255,255,255,0.25);border:none;font-size:13px;font-weight:300;letter-spacing:.5px;cursor:pointer;font-family:
+inherit;">Nu, mulțumesc</button>
+    </div>
+</div>
+
+<!-- TIPS MODAL vechi — compatibilitate -->
+<div class="sheet-modal" id="tips-modal" style="display:none;">
+    <div class="sheet-content">
+        <h2>Confirmare Plată</h2>
+        <div class="reward-group">
+            <div class="reward-btn active" id="tip-btn-0" onclick="selectTip(0)">FĂRĂ</div>
+            <div class="reward-btn" id="tip-btn-5" onclick="selectTip(5)">5 VV</div>
+            <div class="reward-btn" id="tip-btn-10" onclick="selectTip(10)">10 VV</div>
+        </div>
+        <input type="number" id="custom-tip" class="vv-input" style="margin-bottom:24px;" placeholder="Sumă VV 
+personalizată">
+        <button class="btn-launch" onclick="finalizeApprovalWithTips()">TRIMITE PLATA</button>
+    </div>
+</div>
+
+<!-- CAMERA SCREEN -->
+<div id="camera-screen" 
+style="display:none;position:fixed;inset:0;background:#000;z-index:999999;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:55px 20px 
+15px;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);position:absolute;top:0;left:0;right:0;z-index:10;">
+        <div onclick="closeCamera()" 
+style="cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;"><i class="fas 
+fa-times" style="font-size:20px;color:rgba(255,255,255,0.8);"></i></div>
+        <div style="color:#fff;font-weight:800;font-size:13px;letter-spacing:2px;">VV PROOF</div>
+        <div style="width:36px;"></div>
+    </div>
+    <div class="cam-viewfinder" style="flex:1;background:#0a0a0a;overflow:hidden;position:relative;margin-top:90px;">
+        <video id="real-camera-video" style="width:100%;height:100%;object-fit:cover;" autoplay playsinline 
+muted></video>
+    </div>
+    <div id="shutter-container" style="padding:40px;display:flex;justify-content:center;background:#000;">
+        <div onclick="takePicture()" 
+style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.9);border:4px solid 
+rgba(255,255,255,0.25);cursor:pointer;transition:transform .15s;" ontouchstart="this.style.transform='scale(0.92)'" 
+ontouchend="this.style.transform='scale(1)'"></div>
+    </div>
+    <div id="post-photo-menu" style="display:none;padding:24px;background:#0a0a0a;border-top:1px solid 
+rgba(255,255,255,0.08);">
+        <textarea id="photo-msg" class="vv-input" style="height:80px;margin-bottom:14px;" placeholder="Adaugă detalii 
+despre raport..."></textarea>
+        <button id="send-btn" onclick="uploadPhotoToCEO()" style="width:100%;padding:16px;border-radius:12px;background
+:rgba(255,255,255,0.92);color:#000;font-weight:800;border:none;margin-bottom:10px;cursor:pointer;font-size:14px;letter-
+spacing:.5px;">TRIMITE RAPORT</button>
+        <button onclick="retakePhoto()" 
+style="width:100%;padding:14px;border-radius:12px;background:transparent;color:rgba(255,255,255,0.4);border:1px solid 
+rgba(255,255,255,0.08);cursor:pointer;font-weight:700;font-size:13px;">REFĂ POZA</button>
+    </div>
+</div>
+
+<!-- VVeil CONSENT MODAL -->
+<div id="vveil-consent">
+    <div class="vveil-box">
+        <div class="vveil-handle"></div>
+        <div style="margin-bottom:20px;">
+            <div 
+style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:3px;font-weight:700;margin-bottom:8px;">VVeil · 
+PROTECȚIE IDENTITATE</div>
+            <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:8px;">Cum vrei să apari?</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;">Camera VV aplică protecție 
+automată pe fețele din imagini. Alege cum vrei să funcționeze.</div>
+        </div>
+        <div class="vveil-option" onclick="setVVeilConsent('auto')">
+            <div class="vveil-option-icon">🛡</div>
+            <div class="vveil-option-text">
+                <div class="vveil-option-title">Blur automat</div>
+                <div class="vveil-option-desc">Fețele detectate sunt estompate automat. Maxim anonim.</div>
+            </div>
+        </div>
+        <div class="vveil-option" onclick="setVVeilConsent('watermark')">
+            <div class="vveil-option-icon">⬡</div>
+            <div class="vveil-option-text">
+                <div class="vveil-option-title">Vizibil cu watermark VV</div>
+                <div class="vveil-option-desc">Fața ta apare cu marca VV·PROOF. Confirmi autenticitatea.</div>
+            </div>
+        </div>
+        <div class="vveil-option" onclick="setVVeilConsent('none')">
+            <div class="vveil-option-icon">✕</div>
+            <div class="vveil-option-text">
+                <div class="vveil-option-title">Fără protecție</div>
+                <div class="vveil-option-desc">Ești responsabil pentru ce apare în imagini. GDPR se aplică.</div>
+            </div>
+        </div>
+        <div 
+style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:14px;line-height:1.6;text-align:center;">Poți schimba 
+oricând din Setări. Nu se înregistrează audio. Conform GDPR · UE 679/2016.</div>
+    </div>
+</div>
+
+<!-- FOUNDER SAVE OVERLAY -->
+<div id="vv-founder-save-overlay">
+    <div class="fsov-spinner" id="founder-spinner"></div>
+    <img id="founder-save-img" src="" alt="VV CORE Card">
+    <div class="fsov-msg" id="founder-save-msg">Se generează cardul...</div>
+    <button class="fsov-close" id="founder-save-close" 
+onclick="document.getElementById('vv-founder-save-overlay').classList.remove('show')">✕ Închide</button>
+</div>
+
+<!-- SHEET MODALS — Leaderboard, Invites, Future, Support -->
+<div class="sheet-modal" id="modal-leaderboard" style="display:none;">
+    <div class="sheet-content">
+        <div class="sheet-handle"></div>
+        <span 
+style="font-size:18px;font-weight:900;color:#fff;display:block;text-align:center;width:100%;margin-bottom:16px;">Top 
+Insideri</span>
+        <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:16px;line-height:1.5;">Clasamentul este 
+bazat pe activitate, nu pe sold. Sumele sunt private.</p>
+        <div id="leaderboard-container" style="padding:0 0 20px;"><div 
+style="text-align:center;color:rgba(255,255,255,0.2);font-size:12px;padding:20px;">Se încarcă...</div></div>
+        <button onclick="closeModal('modal-leaderboard')" 
+style="width:100%;padding:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:
+14px;color:#fff;font-weight:800;font-size:14px;margin-top:20px;cursor:pointer;letter-spacing:1px;">ÎNCHIDE</button>
+    </div>
+</div>
+
+<div class="sheet-modal" id="modal-invites" style="display:none;">
+    <div class="sheet-content">
+        <div class="sheet-handle"></div>
+        <span style="font-size:18px;font-weight:900;color:#fff;display:block;text-align:center;width:100%;margin-bottom
+:16px;">Invită Prieteni</span>
+        <div class="sheet-scroll-container">
+            <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:16px;line-height:1.5;">Fiecare cheie 
+poate fi folosită o singură dată.<br>Prietenul tău primește <strong style="color:#fff;">100 VV</strong> la 
+activare.</p>
+            <div id="invite-keys-container"><div 
+style="font-size:12px;color:rgba(255,255,255,0.2);text-align:center;padding:10px;">Se încarcă cheile...</div></div>
+        </div>
+        <button onclick="closeModal('modal-invites')" 
+style="width:100%;padding:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:
+14px;color:#fff;font-weight:800;font-size:14px;margin-top:20px;cursor:pointer;letter-spacing:1px;font-family:inherit;">
+ÎNCHIDE</button>
+    </div>
+</div>
+
+<div class="sheet-modal" id="modal-future" style="display:none;">
+    <div class="sheet-content">
+        <div class="sheet-handle"></div>
+        <span 
+style="font-size:18px;font-weight:900;color:#fff;display:block;text-align:center;width:100%;margin-bottom:16px;">VV 
+1.0 — Soon</span>
+        <div class="sheet-scroll-container">
+            <div style="background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(212,175,55,0.03));border:1px solid 
+rgba(212,175,55,0.25);border-radius:18px;padding:20px;margin-bottom:12px;">
+                <div 
+style="font-size:10px;color:rgba(212,175,55,0.7);letter-spacing:3px;font-weight:700;margin-bottom:4px;">VV ONYX</div>
+                <div style="font-size:22px;font-weight:900;color:#fff;">29 <span 
+style="font-size:13px;color:rgba(255,255,255,0.4);">LEI / lună</span></div>
+                <div style="background:rgba(212,175,55,0.06);border:1px solid 
+rgba(212,175,55,0.15);border-radius:10px;padding:10px;text-align:center;margin-top:12px;">
+                    <span 
+style="font-size:11px;color:rgba(212,175,55,0.5);letter-spacing:1px;font-weight:700;">DISPONIBIL LA VV 1.0</span>
+                </div>
+            </div>
+            <div style="background:linear-gradient(135deg,rgba(10,132,255,0.08),rgba(10,132,255,0.02));border:1px 
+solid rgba(10,132,255,0.2);border-radius:18px;padding:20px;margin-bottom:20px;">
+                <div 
+style="font-size:10px;color:rgba(10,132,255,0.7);letter-spacing:3px;font-weight:700;margin-bottom:4px;">VV PRIVÉ</div>
+                <div style="font-size:22px;font-weight:900;color:#fff;">299 <span 
+style="font-size:13px;color:rgba(255,255,255,0.4);">€ / lună</span></div>
+                <div style="background:rgba(10,132,255,0.06);border:1px solid 
+rgba(10,132,255,0.15);border-radius:10px;padding:10px;text-align:center;margin-top:12px;">
+                    <span 
+style="font-size:11px;color:rgba(10,132,255,0.5);letter-spacing:1px;font-weight:700;">DISPONIBIL LA VV 1.0</span>
+                </div>
+            </div>
+        </div>
+        <button onclick="closeModal('modal-future')" 
+style="width:100%;padding:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:
+14px;color:#fff;font-weight:800;font-size:14px;margin-top:20px;cursor:pointer;letter-spacing:1px;">ÎNCHIDE</button>
+    </div>
+</div>
+
+<div class="sheet-modal" id="modal-support-career" style="display:none;">
+    <div class="sheet-content">
+        <div class="sheet-handle"></div>
+        <div style="margin-bottom:16px;">
+            <div style="font-size:17px;font-weight:800;color:#fff;">Suport VV</div>
+        </div>
+        <div id="tab-suport" class="sheet-scroll-container">
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:2px;margin-bottom:12px;">TRIMITE UN 
+MESAJ</div>
+            <textarea id="support-msg-input" placeholder="Ai o problemă sau o idee? Scrie-ne..." 
+style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1
+4px;color:#fff;font-size:13px;font-family:inherit;outline:none;resize:none;height:120px;margin-bottom:10px;"></textarea
+>
+            <button onclick="sendSupport()" style="width:100%;padding:14px;background:rgba(255,255,255,0.9);color:#000;
+border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;min-height:44px;">TRIMITE MESAJ</button>
+        </div>
+        <div id="tab-cariera" style="display:none;" class="sheet-scroll-container">
+            <div style="text-align:center;padding:4px 0 20px;">
+                <div 
+style="font-size:9px;color:rgba(212,175,55,0.55);letter-spacing:4px;font-weight:700;margin-bottom:12px;">VV HYBRID 
+UNIVERS</div>
+                <div 
+style="font-size:19px;font-weight:900;color:#fff;line-height:1.25;margin-bottom:14px;letter-spacing:-.5px;">Construim 
+filtrul<br>de adevăr al lumii.</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);line-height:1.75;margin-bottom:16px;">Căutăm 
+<strong style="color:rgba(255,255,255,0.65);">parteneri, constructori și vizionari</strong> care vor să fie la baza 
+unui ecosistem global.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:13px;">
+                <div><div 
+style="font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:700;margin-bottom:5px;">NUME / 
+ALIAS</div><input id="career-alias" type="text" placeholder="Cum vrei să te știm?" 
+style="width:100%;background:rgba(255,255,255,0.05);border:1px solid 
+rgba(255,255,255,0.1);border-radius:11px;padding:13px 
+14px;color:#fff;font-size:13px;font-family:inherit;outline:none;min-height:44px;-webkit-appearance:none;"></div>
+                <div><div style="font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:700;margin-b
+ottom:5px;">SPECIALIZARE</div><input id="career-spec" type="text" placeholder="Cod, Design, Operațiuni, AI..." 
+style="width:100%;background:rgba(255,255,255,0.05);border:1px solid 
+rgba(255,255,255,0.1);border-radius:11px;padding:13px 
+14px;color:#fff;font-size:13px;font-family:inherit;outline:none;min-height:44px;-webkit-appearance:none;"></div>
+                <div><div 
+style="font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:700;margin-bottom:5px;">PORTFOLIO / 
+LINK</div><input id="career-portfolio" type="url" placeholder="GitHub, Behance, Instagram..." 
+style="width:100%;background:rgba(255,255,255,0.05);border:1px solid 
+rgba(255,255,255,0.1);border-radius:11px;padding:13px 
+14px;color:#fff;font-size:13px;font-family:inherit;outline:none;min-height:44px;-webkit-appearance:none;"></div>
+                <div><div 
+style="font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:2px;font-weight:700;margin-bottom:5px;">CUM NE POȚI 
+AJUTA?</div><textarea id="career-vision" placeholder="Ce ai construi tu în VV? Fii specific." 
+style="width:100%;background:rgba(255,255,255,0.05);border:1px solid 
+rgba(255,255,255,0.1);border-radius:11px;padding:13px 14px;color:#fff;font-size:13px;font-family:inherit;outline:none;r
+esize:none;height:90px;line-height:1.6;"></textarea></div>
+            </div>
+            <label style="display:flex;align-items:flex-start;gap:10px;margin-bottom:13px;cursor:pointer;padding:11px 
+12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;">
+                <input type="checkbox" id="career-gdpr" 
+style="margin-top:2px;flex-shrink:0;accent-color:#D4AF37;width:16px;height:16px;cursor:pointer;">
+                <span style="font-size:11px;color:rgba(255,255,255,0.3);line-height:1.6;">Sunt de acord ca datele mele 
+să fie salvate pentru o potențială colaborare. <strong style="color:rgba(255,255,255,0.45);font-weight:500;">VV le va 
+șterge automat în 6 luni dacă nu construim nimic împreună.</strong></span>
+            </label>
+            <div id="career-error-msg" style="display:none;font-size:11px;color:#ff3b30;margin-bottom:10px;padding:9px 
+12px;background:rgba(255,59,48,0.08);border:1px solid rgba(255,59,48,0.18);border-radius:9px;"></div>
+            <button onclick="submitCareerApplication(event)" style="width:100%;padding:16px;background:rgba(255,255,255
+,0.95);color:#000;border:none;border-radius:13px;font-weight:900;font-size:14px;cursor:pointer;min-height:52px;letter-s
+pacing:.5px;font-family:inherit;">APLICĂ LA VV</button>
+        </div>
+        <button onclick="closeModal('modal-support-career')" style="width:100%;padding:16px;background:rgba(255,255,255
+,0.06);border:none;border-radius:14px;color:rgba(255,255,255,0.4);font-weight:700;font-size:13px;margin-top:10px;cursor
+:pointer;font-family:inherit;">ÎNCHIDE</button>
+    </div>
+</div>
+
+    <script src="vv-pulse.js"></script>
+</body>
+</html>
