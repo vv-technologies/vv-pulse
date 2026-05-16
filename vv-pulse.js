@@ -1159,12 +1159,6 @@ function toggleAcceptButton() {}
 
 function enterVVPulse() {
     var btn = document.getElementById('btn-accept');
-    var cb  = document.getElementById('tc-checkbox');
-    if (cb && !cb.checked) {
-        var err = document.getElementById('key-error-msg-fallback');
-        if (err) { err.textContent = 'Trebuie să accepți regulamentul mai întâi.'; err.style.display = 'block'; }
-        return;
-    }
     if (btn) { btn.textContent = 'SE CONECTEAZĂ...'; btn.style.opacity = '0.7'; btn.style.pointerEvents = 'none'; }
     var doEnter = function() {
         localStorage.setItem('vv_access_key', 'LEA_DEVICE');
