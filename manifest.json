@@ -1,0 +1,23 @@
+{
+  "name": "VV Pulse",
+  "short_name": "VV Pulse",
+  "description": "Real-time field operations. Find missions, earn VV, stay anonymous.",
+  "start_url": "/",
+  "scope": "/Network/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050507",
+  "theme_color": "#050507",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/050507/ffffff?text=VV",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/050507/ffffff?text=VV",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
