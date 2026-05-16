@@ -151,23 +151,10 @@ utilizare VV. Confirm că am <strong style="color:rgba(255,255,255,0.75);">minim
 responsabilitatea legală.</span>
         </label>
 
-        <!-- Input cheie -->
-        <div style="position:relative;margin-bottom:12px;">
-            <input type="text" class="key-input" id="access-key"
-                placeholder="CHEIE DE ACCES"
-                style="width:100%;background:rgba(255,255,255,0.06);border:0.5px solid 
-rgba(255,255,255,0.12);border-radius:14px;padding:15px 18px;color:#fff;font-size:15px;font-family:-apple-system,monospa
-ce;letter-spacing:2px;outline:none;-webkit-appearance:none;text-transform:uppercase;">
-        </div>
-
         <!-- Buton principal -->
         <button class="btn-main" id="btn-accept"
-            
-onclick="try{startBootSequence();}catch(e){document.getElementById('key-error-msg-fallback').textContent='Eroare: 
-'+e.message;document.getElementById('key-error-msg-fallback').style.display='block';}"
-            style="width:100%;padding:17px;background:rgba(255,255,255,0.95);color:#000;border:none;border-radius:16px;
-font-size:15px;font-weight:800;letter-spacing:0.5px;cursor:pointer;font-family:-apple-system,sans-serif;min-height:54px
-;-webkit-appearance:none;transition:opacity .15s;">
+            onclick="enterVVPulse()"
+            style="width:100%;padding:17px;background:rgba(255,255,255,0.95);color:#000;border:none;border-radius:16px;font-size:15px;font-weight:800;letter-spacing:0.5px;cursor:pointer;font-family:-apple-system,sans-serif;min-height:54px;-webkit-appearance:none;transition:opacity .15s;">
             Intră în VV
         </button>
 
