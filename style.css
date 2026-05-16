@@ -1,0 +1,1640 @@
+/* ================================================================
+   VV PULSE — style.css
+   Glass morphism premium · Apple-style · No gold · No matrix
+   VV Technologies © 2026
+   ================================================================ */
+
+/* ============================================
+   VV PULSE — GLASSMORPHISM PREMIUM
+   White edition · Apple-style blur
+   ============================================ */
+
+:root {
+    --bg: #050507;
+    --glass: rgba(255, 255, 255, 0.06);
+    --glass-hover: rgba(255, 255, 255, 0.1);
+    --glass-strong: rgba(255, 255, 255, 0.12);
+    --border: rgba(255, 255, 255, 0.12);
+    --border-soft: rgba(255, 255, 255, 0.07);
+    --white: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.55);
+    --text-muted: rgba(255, 255, 255, 0.3);
+    --green: #34c759;
+    --blue: #0A84FF;
+    --red: #ff3b30;
+    --blur: blur(24px);
+    --blur-light: blur(12px);
+    --radius: 18px;
+    --radius-sm: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text-primary);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    touch-action: pan-x pan-y;
+}
+
+/* ============================================
+   SPLASH SCREEN
+   ============================================ */
+#splash-screen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                #050507;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    /* Fluid padding — safe area pentru notch iPhone X+ */
+    padding-top: max(60px, env(safe-area-inset-top, 60px));
+    padding-left: clamp(16px, 5vw, 28px);
+    padding-right: clamp(16px, 5vw, 28px);
+    padding-bottom: max(32px, env(safe-area-inset-bottom, 32px));
+
+    /* Scroll fluid pe tot splash-ul dacă depășește ecranul */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* VV LOGO */
+.vv-massive-logo {
+    /* clamp(min, preferat, max) — fluid pe orice ecran */
+    font-size: clamp(64px, 18vw, 110px);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: clamp(-4px, -1vw, -7px);
+    line-height: 1;
+    margin-bottom: clamp(6px, 2vw, 12px);
+    animation: logoGlow 3s infinite alternate ease-in-out;
+}
+
+@keyframes logoGlow {
+    0% {
+        text-shadow: 0 0 20px rgba(255,255,255,0.08);
+        filter: brightness(1);
+    }
+    100% {
+        text-shadow: 0 0 60px rgba(255,255,255,0.25), 0 0 120px rgba(255,255,255,0.08);
+        filter: brightness(1.1);
+    }
+}
+
+/* PREMIUM PILL */
+.glass-premium {
+    background: var(--glass);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    padding: 9px 28px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+    color: rgba(255,255,255,0.8);
+}
+
+.slogan-text {
+    font-size: clamp(9px, 2.5vw, 11px);
+    color: var(--text-muted);
+    letter-spacing: clamp(2px, 0.8vw, 4px);
+    margin-bottom: clamp(20px, 5vw, 38px);
+    text-align: center;
+}
+
+/* RULES BOX */
+.rules-container {
+    background: var(--glass);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    /* Fluid padding */
+    padding: clamp(18px, 4vw, 26px) clamp(14px, 4vw, 22px);
+
+    /* Fluid width — se adaptează pe orice ecran */
+    width: 100%;
+    max-width: min(390px, 100%);
+    margin-bottom: clamp(16px, 3vh, 24px);
+
+    /* Scroll fluid în container — max 50% din înălțimea ecranului */
+    max-height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+}
+
+.rules-container h3 {
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.rules-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.rules-container li {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-bottom: 13px;
+    line-height: 1.6;
+    padding-bottom: 13px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.rules-container li:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.rules-container li strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* CHECKBOX */
+.tc-box {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 3vw, 16px);
+    width: 100%;
+    max-width: min(390px, 100%);
+    margin-bottom: clamp(14px, 3vw, 20px);
+    background: var(--glass);
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: clamp(12px, 3vw, 16px) clamp(14px, 3.5vw, 18px);
+    cursor: pointer;
+}
+
+.custom-checkbox {
+    width: 22px;
+    height: 22px;
+    accent-color: #000;
+    cursor: pointer;
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.custom-checkbox:checked {
+    background: #fff;
+    border-color: #fff;
+}
+
+.custom-checkbox:checked::after {
+    content: "✓";
+    color: #000;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.custom-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+/* INPUT */
+.key-input {
+    width: 100%;
+    max-width: min(390px, 100%);
+    background: var(--glass);
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: clamp(14px, 3.5vw, 18px) clamp(16px, 4vw, 22px);
+    color: #fff;
+    font-size: clamp(14px, 3.5vw, 16px);
+    letter-spacing: 2px;
+    margin-bottom: clamp(10px, 2.5vw, 16px);
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+}
+
+.key-input:focus {
+    border-color: rgba(255,255,255,0.3);
+    background: var(--glass-hover);
+}
+
+.key-input::placeholder {
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    font-size: 13px;
+}
+
+/* MAIN BUTTON */
+.btn-main {
+    width: 100%;
+    max-width: min(390px, 100%);
+    background: rgba(255,255,255,0.95);
+    color: #000;
+    border: none;
+    padding: clamp(15px, 3.5vw, 19px);
+    border-radius: var(--radius-sm);
+    font-weight: 800;
+    font-size: clamp(13px, 3.5vw, 15px);
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.25s;
+    backdrop-filter: var(--blur-light);
+}
+
+.btn-main:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+.btn-main.disabled {
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+/* ============================================
+   ALIAS SCREEN
+   ============================================ */
+#alias-screen {
+    position: fixed;
+    inset: 0;
+    background: #050507;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 22px;
+}
+
+/* ============================================
+   TUTORIAL SCREEN
+   ============================================ */
+#tutorial-screen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 60%), #050507;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 22px;
+}
+
+.tutorial-card {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 360px;
+    animation: fadeSlide 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tutorial-card.active {
+    display: flex;
+}
+
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.tut-icon {
+    font-size: 52px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 32px;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));
+}
+
+.tutorial-card h2 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: #fff;
+    letter-spacing: -0.3px;
+}
+
+.tutorial-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 44px;
+}
+
+/* ============================================
+   APP CONTAINER & MAP
+   ============================================ */
+#app-container {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+#map-view {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+
+/* HUD */
+.stealth-hud {
+    position: absolute;
+    top: 58px;
+    left: 16px;
+    right: 16px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.glass-pill {
+    background: var(--glass-strong);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    padding: 10px 18px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+
+.vv-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--green);
+    animation: pulseDot 2.5s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* RADAR BANNER */
+#radar-banner {
+    position: absolute;
+    top: 115px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.8);
+    display: none;
+    white-space: nowrap;
+}
+
+.radar-banner-icon {
+    margin-right: 6px;
+}
+
+/* ACTION SIDEBAR — fix la milimetru deasupra dock-ului */
+.action-hub { display: none; }
+
+.action-sidebar {
+    position: fixed;
+    right: 16px;
+    bottom: calc(72px + 20px + env(safe-area-inset-bottom, 0px));
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* MARKER CLUSTER custom styling */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+    background-clip: padding-box;
+}
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+    width: 34px;
+    height: 34px;
+    margin-left: 3px;
+    margin-top: 3px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, sans-serif;
+}
+.marker-cluster-small { width: 40px; height: 40px; }
+.marker-cluster-medium { width: 46px; height: 46px; }
+.marker-cluster-large { width: 52px; height: 52px; }
+.marker-cluster-large div {
+    background: rgba(212,175,55,0.2);
+    border-color: rgba(212,175,55,0.5);
+    color: #fff;
+    font-size: 13px;
+}
+
+.fab-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255,255,255,0.8);
+    font-size: 18px;
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.fab-btn:active {
+    transform: scale(0.92);
+    background: var(--glass-hover);
+}
+
+.fab-radar {
+    color: rgba(255,255,255,0.9);
+}
+
+.fab-cam {
+    width: 62px;
+    height: 62px;
+    background: rgba(255,255,255,0.92);
+    color: #000;
+    font-size: 22px;
+    border: none;
+    box-shadow: 0 4px 24px rgba(255,255,255,0.12);
+}
+
+.fab-mission-receive {
+    color: var(--blue);
+}
+
+.inbox-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background: var(--red);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #050507;
+}
+
+/* ============================================
+   BOTTOM DOCK
+   ============================================ */
+.stealth-dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
+    background: rgba(8, 8, 10, 0.85);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border-top: 1px solid var(--border-soft);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px 0 30px;
+}
+
+.dock-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 5px 28px;
+    transition: color 0.2s;
+}
+
+.dock-icon.active {
+    color: #fff;
+}
+
+.btn-soon {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--glass);
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+}
+
+/* ============================================
+   PROFILE SCREEN
+   ============================================ */
+#profile-screen {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    overflow-y: auto;
+    padding: 65px 18px 110px;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.profile-title {
+    font-size: 30px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.8px;
+}
+
+.settings-icon {
+    font-size: 22px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+}
+
+/* BLACK CARD */
+.real-black-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.real-black-card::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -10%;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.card-logo-silver {
+    font-size: 38px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.1);
+    letter-spacing: -2px;
+}
+
+.card-slogan-main {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+}
+
+.card-slogan-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+/* BALANCE */
+.locked-value-container {
+    background: var(--glass);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.locked-value-icon {
+    font-size: 22px;
+    color: var(--text-muted);
+}
+
+.value-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.value-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+}
+
+.value-number {
+    font-size: 22px;
+    font-weight: 900;
+}
+
+/* FEEDBACK BTN */
+.feedback-btn {
+    background: var(--glass);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.feedback-btn:active {
+    background: var(--glass-hover);
+}
+
+.feedback-icon {
+    font-size: 18px;
+    color: var(--blue);
+    width: 42px;
+    height: 42px;
+    background: rgba(10, 132, 255, 0.12);
+    border: 1px solid rgba(10, 132, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.feedback-text { flex: 1; }
+
+.feedback-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.feedback-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ============================================
+   SHEET MODALS
+   ============================================ */
+.sheet-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 50000;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.sheet-content {
+    background: rgba(14, 14, 18, 0.97);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-radius: 26px 26px 0 0;
+    padding: 30px 22px 50px;
+    width: 100%;
+    max-width: 500px;
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0.5; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.sheet-content h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 22px;
+}
+
+.btn-launch {
+    width: 100%;
+    background: rgba(255,255,255,0.92);
+    color: #000;
+    border: none;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: block;
+}
+
+.btn-launch:active {
+    transform: scale(0.98);
+    opacity: 0.85;
+}
+
+.reward-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.reward-btn {
+    flex: 1;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+}
+
+.reward-btn.active {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.35);
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.vv-input {
+    width: 100%;
+    background: var(--glass);
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 15px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+    resize: none;
+    transition: border-color 0.3s;
+}
+
+.vv-input:focus {
+    border-color: rgba(255,255,255,0.25);
+}
+
+.vv-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* ============================================
+   LEAFLET MAP OVERRIDES
+   ============================================ */
+.leaflet-container {
+    background: #000 !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background: rgba(12, 12, 16, 0.97) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 16px !important;
+    backdrop-filter: var(--blur) !important;
+    -webkit-backdrop-filter: var(--blur) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.8) !important;
+}
+
+.leaflet-popup-tip {
+    background: rgba(12, 12, 16, 0.97) !important;
+}
+
+.leaflet-control-attribution {
+    display: none !important;
+}
+
+.leaflet-popup-content {
+    margin: 12px 16px !important;
+    color: #fff !important;
+}
+
+/* TARGET CROSSHAIR */
+.target-crosshair {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.crosshair-center {
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(255,255,255,0.15), 0 0 0 12px rgba(255,255,255,0.06);
+    animation: crossPulse 1.8s infinite;
+}
+
+@keyframes crossPulse {
+    0%, 100% { box-shadow: 0 0 0 5px rgba(255,255,255,0.15), 0 0 0 12px rgba(255,255,255,0.06); }
+    50% { box-shadow: 0 0 0 8px rgba(255,255,255,0.1), 0 0 0 18px rgba(255,255,255,0.03); }
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+
+/* ============================================
+   QUICK FILTER BAR
+   ============================================ */
+.quick-filter-bar {
+    position: absolute;
+    top: 110px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    gap: 8px;
+    padding: 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    pointer-events: all;
+}
+
+.quick-filter-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    user-select: none;
+}
+
+.filter-pill:active {
+    transform: scale(0.95);
+}
+
+.filter-pill.active {
+    background: rgba(255,255,255,0.92);
+    color: #000;
+    border-color: transparent;
+    box-shadow: 0 2px 12px rgba(255,255,255,0.15);
+}
+
+/* shimmer removed */
+    100% { background-position: 200% 0; }
+}
+
+/* iOS Swipe Back Block */
+#app-container, #splash-screen, #tutorial-screen, #alias-screen {
+    position: fixed;
+    inset: 0;
+    overscroll-behavior: none;
+    -webkit-overscroll-behavior: none;
+    touch-action: pan-x pan-y;
+}
+
+/* Doar profil si modals pot face scroll intern */
+#profile-screen {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================
+   FIX BARE ALBE iOS Safari
+   ============================================ */
+html, body {
+    background: #050507 !important;
+}
+
+/* Elimina bara alba de jos Safari */
+#map-view, #app-container {
+    background: #050507;
+}
+
+.stealth-dock {
+    background: rgba(8,8,10,0.98) !important;
+}
+
+/* ============================================
+   GPU ACCELERATION — Native Feel
+   ============================================ */
+* {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.fab-btn, .filter-pill, .btn-main, .btn-launch, .dock-icon {
+    will-change: transform;
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+}
+
+.sheet-content {
+    will-change: transform;
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+}
+
+/* Animatii folosesc transform nu top/bottom */
+@keyframes slideUp {
+    from { transform: translate3d(0, 100%, 0); opacity: 0.5; }
+    to { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translate3d(0, 20px, 0) scale(0.98); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* ============================================
+   RADAR ANIMATIONS — Insider Search Overlay
+   ============================================ */
+@keyframes radarPulse1 {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.15); opacity: 0.1; }
+}
+@keyframes radarPulse2 {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.15; }
+}
+@keyframes radarPulse3 {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.25); opacity: 0.2; }
+}
+
+/* Overlay display flex cand e vizibil */
+#insider-search-bar[style*="flex"] {
+    display: flex !important;
+}
+
+/* ============================================
+   FIX BARE ALBE + OVERLAY CENTRAT
+   ============================================ */
+
+/* Elimina bara alba de jos si dreapta Safari */
+html, body {
+    background-color: #050507 !important;
+    overscroll-behavior: none !important;
+}
+
+/* Umple toata zona vizibila inclusiv safe areas */
+#app-container {
+    background: #050507;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+#map-view {
+    background: #050507;
+    position: fixed;
+    inset: 0;
+    bottom: 0;
+}
+
+/* OVERLAY INSIDER — fix centrat pe ecran */
+#insider-search-bar {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: none;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 20000 !important;
+}
+
+/* GPU smooth pe animatiile radarului */
+#insider-search-bar > div:first-child {
+    will-change: opacity;
+    transform: translate3d(0,0,0);
+}
+
+#insider-search-bar > div:last-child {
+    will-change: transform, opacity;
+    transform: translate3d(0,0,0);
+}
+
+/* ============================================
+   ANIMATIE MISIUNI PE HARTĂ
+   ============================================ */
+@keyframes missionPulse {
+    0%, 100% { 
+        box-shadow: 0 0 16px rgba(255,59,48,0.4);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 28px rgba(255,59,48,0.7), 0 0 50px rgba(255,59,48,0.2);
+        transform: scale(1.08);
+    }
+}
+
+/* ============================================
+   SHEET MODAL SCROLL — Apple Premium Feel
+   ============================================ */
+.sheet-scroll-container {
+    max-height: 58vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sheet-scroll-container::-webkit-scrollbar {
+    width: 3px;
+}
+
+.sheet-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+}
+
+
+/* ================================================================
+   FLUID RESPONSIVE — VV Pulse Premium
+   Adaptare pentru orice ecran: iPhone SE → iPad
+   ================================================================ */
+
+/* Ecrane foarte mici (iPhone SE, 320px) */
+@media (max-width: 360px) {
+    .vv-massive-logo { font-size: 56px; letter-spacing: -3px; }
+    .rules-container { max-height: 42vh; padding: 14px 12px; }
+    .rules-container li { font-size: 11.5px; margin-bottom: 10px; padding-bottom: 10px; }
+    .btn-main { font-size: 13px; padding: 14px; }
+    .key-input { font-size: 13px; padding: 13px 16px; }
+    .glass-premium { font-size: 9px; letter-spacing: 3px; padding: 7px 20px; }
+}
+
+/* Ecrane medii (iPhone X/11/12/13/14 — 375-390px) */
+@media (min-width: 361px) and (max-width: 430px) {
+    .rules-container { max-height: 48vh; }
+}
+
+/* Ecrane mari (iPhone Plus, 14 Pro Max — 430px+) */
+@media (min-width: 431px) and (max-width: 768px) {
+    .vv-massive-logo { font-size: clamp(80px, 15vw, 100px); }
+    .rules-container { max-height: 52vh; max-width: 440px; }
+    .btn-main, .key-input, .tc-box { max-width: 440px; }
+}
+
+/* Tablete și desktop (fallback elegant) */
+@media (min-width: 769px) {
+    #splash-screen { justify-content: center; }
+    .vv-massive-logo { font-size: 88px; }
+    .rules-container { max-height: 45vh; max-width: 480px; }
+    .btn-main, .key-input, .tc-box { max-width: 480px; }
+}
+
+/* Ecrane scurte în înălțime (landscape sau device mic) */
+@media (max-height: 700px) {
+    .rules-container { max-height: 38vh; }
+    .vv-massive-logo { font-size: clamp(44px, 10vh, 72px); margin-bottom: 6px; }
+    .slogan-text { margin-bottom: 14px; }
+    .glass-premium { margin-bottom: 6px; }
+}
+
+/* ================================================================
+   SCROLLBAR STYLING — reguli-container fluid
+   ================================================================ */
+.rules-container::-webkit-scrollbar {
+    width: 3px;
+}
+.rules-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.rules-container::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.12);
+    border-radius: 2px;
+}
+.rules-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+/* ================================================================
+   SEARCH BAR — BUG FIX 1: Stiluri lipsă readăugate
+   ================================================================ */
+.vv-search-container {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 420px;
+    z-index: 1000;
+}
+
+.vv-search-bar {
+    display: flex;
+    align-items: center;
+    background: rgba(10, 10, 18, 0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 0 16px;
+    height: 48px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    transition: border-color 0.2s;
+}
+
+.vv-search-bar:focus-within {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+}
+
+.vv-search-icon {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 14px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.vv-search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+    caret-color: #fff;
+}
+
+.vv-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 13px;
+}
+
+.vv-search-clear {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    padding: 4px 6px;
+    display: none;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.vv-search-clear:hover { color: rgba(255, 255, 255, 0.7); }
+.vv-search-clear.visible { display: block; }
+
+.vv-search-results {
+    background: rgba(10, 10, 18, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    max-height: 240px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+}
+
+.vv-search-results.visible { display: block; }
+
+.vv-search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.15s;
+}
+
+.vv-search-result-item:last-child { border-bottom: none; }
+.vv-search-result-item:active { background: rgba(255, 255, 255, 0.06); }
+
+.vv-search-result-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.vv-search-result-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.vv-search-result-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vv-search-result-sub {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.35);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+}
+
+.vv-search-loading {
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 700;
+    display: none;
+    background: rgba(10, 10, 18, 0.96);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+}
+
+.vv-search-loading.visible { display: block; }
+
+
+/* ── RESPONSIVE ADDITIONS (vv-pulse) ── */
+
+/* Small phones (< 375px: iPhone SE, small Android) */
+@media (max-width: 374px) {
+    .key-input { font-size: 14px !important; }
+    .btn-main { font-size: 14px !important; }
+    .glass-pill { font-size: 11px !important; padding: 6px 10px !important; }
+    #nexus-sheet { padding: 16px 14px 20px !important; }
+}
+
+/* Large phones (> 430px: Pro Max, large Android) */
+@media (min-width: 430px) {
+    #nexus-sheet { max-width: 500px; margin: 0 auto; }
+    .stealth-dock { max-width: 500px; left: 50%; transform: translateX(-50%); }
+    #action-hub { right: max(20px, env(safe-area-inset-right, 20px)) !important; }
+}
+
+/* Ensure touch targets min 44px (Apple HIG) */
+button, [onclick], .dock-icon, .action-btn {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Prevent text resize on rotation */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+/* Smooth scrolling everywhere */
+* { -webkit-overflow-scrolling: touch; }
+
+/* Prevent callout on long-press */
+button, img, .map-container { -webkit-touch-callout: none; }
+
+/* Leaflet map full height fix */
+#map { position: absolute !important; inset: 0 !important; }
+
+/* ── Inline overrides (splash, founder card) ── */
+
+    /* ── SPLASH SCREEN NOU ── */
+    #splash-screen {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        padding-top: max(60px, env(safe-area-inset-top, 40px));
+    }
+    .founder-dot {
+        display: inline-block;
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid rgba(255,255,255,0.4);
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.08), 0 0 8px rgba(255,255,255,0.15);
+        margin-left: 7px;
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+
+    /* Card fondator — sticlă mată, zero aur */
+    #vv-founder-card {
+        background: rgba(255,255,255,0.04);
+        backdrop-filter: blur(30px) saturate(1.2);
+        -webkit-backdrop-filter: blur(30px) saturate(1.2);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 22px;
+        padding: 24px 22px;
+        margin-bottom: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+    #vv-founder-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 15%; right: 15%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    }
+
+    .founder-id-label {
+        font-size: 9px;
+        color: rgba(255,255,255,0.22);
+        letter-spacing: 2.5px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+    }
+
+    .founder-id-value {
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.55);
+        letter-spacing: 1px;
+        margin-bottom: 14px;
+    }
+
+    .founder-save-btn {
+        width: 36px; height: 36px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        color: rgba(255,255,255,0.45);
+        font-size: 14px;
+        transition: all 0.2s;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .founder-save-btn:active {
+        background: rgba(255,255,255,0.1);
+        transform: scale(0.94);
+    }
+
+    /* Overlay save card */
+    #vv-founder-save-overlay {
+        position: fixed; inset: 0;
+        background: #000;
+        z-index: 999999;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        gap: 16px;
+    }
+    #vv-founder-save-overlay.show { display: flex; }
+    #founder-save-img {
+        display: none;
+        width: 100%; max-width: 320px;
+        border-radius: 20px;
+        -webkit-user-select: none; user-select: none;
+    }
+    .fsov-msg {
+        font-size: 13px;
+        color: rgba(255,255,255,0.4);
+        text-align: center;
+        line-height: 1.7;
+        max-width: 260px;
+    }
+    .fsov-msg strong {
+        color: rgba(255,255,255,0.75);
+        display: block;
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+    .fsov-close {
+        padding: 11px 32px;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        color: rgba(255,255,255,0.3);
+        font-size: 12px;
+        cursor: pointer;
+        font-family: inherit;
+        display: none;
+        min-height: 44px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .fsov-spinner {
+        width: 36px; height: 36px;
+        border: 1.5px solid rgba(255,255,255,0.1);
+        border-top-color: rgba(255,255,255,0.6);
+        border-radius: 50%;
+        animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* VVeil consent modal */
+    #vveil-consent {
+        display: none;
+        position: fixed; inset: 0;
+        z-index: 999998;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        align-items: flex-end;
+        justify-content: center;
+    }
+    #vveil-consent.show { display: flex; }
+    .vveil-box {
+        width: 100%; max-width: 430px;
+        background: rgba(14,14,18,0.98);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 26px 26px 0 0;
+        padding: 28px 22px calc(28px + env(safe-area-inset-bottom, 0px));
+        animation: slideUp .35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .vveil-handle {
+        width: 32px; height: 3px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 2px;
+        margin: 0 auto 22px;
+    }
+    .vveil-option {
+        display: flex; align-items: flex-start; gap: 14px;
+        padding: 14px 16px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 14px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: background .15s;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .vveil-option:active { background: rgba(255,255,255,0.06); }
+    .vveil-option-icon {
+        width: 36px; height: 36px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; flex-shrink: 0;
+    }
+    .vveil-option-text { flex: 1; }
+    .vveil-option-title {
+        font-size: 13px; font-weight: 700; color: #fff;
+        margin-bottom: 3px;
+    }
+    .vveil-option-desc {
+        font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.5;
+    }
+
+    /* Buton raport fake */
+    .btn-report-fake {
+        width: 100%; padding: 11px;
+        background: transparent;
+        border: 1px solid rgba(255,59,48,0.15);
+        border-radius: 10px;
+        color: rgba(255,59,48,0.55);
+        font-size: 11px; font-weight: 700;
+        cursor: pointer; font-family: inherit;
+        letter-spacing: .5px;
+        min-height: 40px;
+        margin-top: 6px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
