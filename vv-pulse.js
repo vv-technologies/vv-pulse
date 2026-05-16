@@ -1164,12 +1164,18 @@ function enterVVPulse() {
         localStorage.setItem('vv_access_key', 'LEA_DEVICE');
         if (btn) { btn.textContent = 'ACCES ACORDAT ✓'; btn.style.background = 'rgba(52,199,89,0.9)'; btn.style.color = '#000'; btn.style.opacity = '1'; }
         setTimeout(function() {
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('alias-screen').style.display = 'flex';
+            var splash = document.getElementById('splash-screen');
+            var alias  = document.getElementById('alias-screen');
+            if (splash) splash.style.display = 'none';
+            if (alias)  alias.style.display  = 'flex';
         }, 400);
     };
     if (!currentUser) {
-        auth.signInAnonymously().then(function(cred) { currentUser = cred.user; doEnter(); }).catch(doEnter);
+        try {
+            auth.signInAnonymously()
+                .then(function(cred) { currentUser = cred.user; doEnter(); })
+                .catch(function() { doEnter(); });
+        } catch(e) { doEnter(); }
     } else {
         doEnter();
     }
