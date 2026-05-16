@@ -1142,8 +1142,7 @@ window.onload = function() {
             if (user) {
                 currentUser = user;
                 var tutorialDone = localStorage.getItem('vv_premium_tutorial_done');
-                var accessKey = localStorage.getItem('vv_access_key');
-                if (tutorialDone === 'DA' && accessKey) {
+                if (tutorialDone === 'DA') {
                     document.getElementById('splash-screen').style.display = 'none';
                     document.getElementById('tutorial-screen').style.display = 'none';
                     showApp();
@@ -1158,70 +1157,31 @@ window.onload = function() {
 
 function toggleAcceptButton() {}
 
-async function startBootSequence() {
-    const key = document.getElementById('access-key').value.trim().toUpperCase();
-    const btn = document.getElementById('btn-accept');
-    const cb = document.getElementById('tc-checkbox');
-
-    const existingError = document.getElementById('key-error-msg');
-    if (existingError) existingError.remove();
-
-    if (!cb || !cb.checked) { showKeyError('Trebuie sÄƒ accepÈ›i regulamentul mai Ã®ntÃ¢i.'); return; }
-    if (!key) { showKeyError('Introdu cheia de acces.'); return; }
-
-    btn.textContent = 'SE VERIFICÄ‚...';
-    btn.style.opacity = '0.7';
-    btn.style.pointerEvents = 'none';
-
-    try {
-        const snap = await db.collection('access_keys')
-            .where('key', '==', key).where('active', '==', true).get();
-
-        if (snap.empty) {
-            const snap2 = await db.collection('access_keys').where('key', '==', key).get();
-            throw new Error(snap2.empty ? 'Cheie invalidÄƒ: ' + key : 'Cheie dezactivatÄƒ. Cere una nouÄƒ.');
-        }
-
-        localStorage.setItem('vv_access_key', key);
-
-        if (!currentUser) {
-            btn.textContent = 'SE CONECTEAZÄ‚...';
-            const cred = await auth.signInAnonymously();
-            currentUser = cred.user;
-        }
-
-        btn.textContent = 'ACCES ACORDAT âœ“';
-        btn.style.background = 'rgba(52,199,89,0.9)';
-        btn.style.color = '#000';
-        btn.style.opacity = '1';
-
-        setTimeout(() => {
+function enterVVPulse() {
+    var btn = document.getElementById('btn-accept');
+    var cb  = document.getElementById('tc-checkbox');
+    if (cb && !cb.checked) {
+        var err = document.getElementById('key-error-msg-fallback');
+        if (err) { err.textContent = 'Trebuie să accepți regulamentul mai întâi.'; err.style.display = 'block'; }
+        return;
+    }
+    if (btn) { btn.textContent = 'SE CONECTEAZĂ...'; btn.style.opacity = '0.7'; btn.style.pointerEvents = 'none'; }
+    var doEnter = function() {
+        localStorage.setItem('vv_access_key', 'LEA_DEVICE');
+        if (btn) { btn.textContent = 'ACCES ACORDAT ✓'; btn.style.background = 'rgba(52,199,89,0.9)'; btn.style.color = '#000'; btn.style.opacity = '1'; }
+        setTimeout(function() {
             document.getElementById('splash-screen').style.display = 'none';
             document.getElementById('alias-screen').style.display = 'flex';
-        }, 500);
-
-    } catch(err) {
-        btn.textContent = 'DECRIPTEZ & INTRU';
-        btn.style.opacity = '1';
-        btn.style.pointerEvents = 'auto';
-        btn.style.background = '';
-        btn.style.color = '';
-        showKeyError('âŒ ' + (err.message || JSON.stringify(err)));
+        }, 400);
+    };
+    if (!currentUser) {
+        auth.signInAnonymously().then(function(cred) { currentUser = cred.user; doEnter(); }).catch(doEnter);
+    } else {
+        doEnter();
     }
 }
 
-function showKeyError(msg) {
-    const existing = document.getElementById('key-error-msg');
-    if (existing) existing.remove();
-    const err = document.createElement('div');
-    err.id = 'key-error-msg';
-    err.style.cssText = 'color:#ff3b30;font-size:14px;text-align:center;margin-top:10px;margin-bottom:10px;font-weight:
-700;width:100%;max-width:390px;padding:10px 14px;background:rgba(255,59,48,0.1);border:1px solid 
-rgba(255,59,48,0.3);border-radius:10px;line-height:1.4;word-break:break-all;';
-    err.textContent = 'âš ï¸ ' + msg;
-    const keyInput = document.getElementById('access-key');
-    if (keyInput && keyInput.parentNode) keyInput.parentNode.insertBefore(err, keyInput.nextSibling);
-}
+function startBootSequence() { enterVVPulse(); }
 
 // ================= CONFIRMARE ALIAS =================
 function confirmAlias() {
