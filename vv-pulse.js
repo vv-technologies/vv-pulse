@@ -1454,6 +1454,7 @@ style="background:rgba(255,255,255,0.92);color:#000;border:none;padding:11px
 CONTRACT</button></div>');
     });
     loadMissionsOnMap();
+    loadVVNow();
     initSearchBar();
     setTimeout(() => { if (map) map.invalidateSize(); }, 400);
 }
@@ -4256,3 +4257,117 @@ if (_vvOrigLoadUserData) {
     };
 }
 
+
+// ================================================================
+// VV NOW — Zone activity badges pe harta (anonim, fara agent names)
+// ================================================================
+var _vvNowLayers = [];
+
+function _geohashToLatLng(hash) {
+    var BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';
+    var minLat=-90,maxLat=90,minLng=-180,maxLng=180,even=true;
+    for (var i=0;i<hash.length;i++) {
+        var chr=BASE32.indexOf(hash[i]); if(chr<0)continue;
+        for(var b=4;b>=0;b--){
+            var mask=1<<b;
+            if(even){var mid=(minLng+maxLng)/2;if(chr&mask)minLng=mid;else maxLng=mid;}
+            else{var mid=(minLat+maxLat)/2;if(chr&mask)minLat=mid;else maxLat=mid;}
+            even=!even;
+        }
+    }
+    return [(minLat+maxLat)/2, (minLng+maxLng)/2];
+}
+
+function loadVVNow() {
+    if (!map || !db) return;
+    var yesterday = new Date(Date.now() - 24*60*60*1000);
+    db.collection('vv_mood').where('updatedAt', '>', yesterday).get().then(function(snap) {
+        var zones = {};
+        snap.forEach(function(doc) {
+            var d = doc.data();
+            var geo = (d.geohash || '').substring(0,5);
+            if (!geo) return;
+            if (!zones[geo]) zones[geo] = { count: 0, lastAt: null, moods: {} };
+            zones[geo].count++;
+            if (d.updatedAt) zones[geo].lastAt = d.updatedAt.toDate ? d.updatedAt.toDate() : new Date(d.updatedAt);
+            if (d.dominant) zones[geo].moods[d.dominant] = (zones[geo].moods[d.dominant]||0)+1;
+        });
+        _vvNowLayers.forEach(function(l){ map.removeLayer(l); });
+        _vvNowLayers = [];
+        Object.keys(zones).forEach(function(geo) {
+            var z = zones[geo];
+            var ll = _geohashToLatLng(geo);
+            var timeStr = z.lastAt ? z.lastAt.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'}) : '--:--';
+            var topMood = Object.keys(z.moods).sort(function(a,b){return z.moods[b]-z.moods[a];})[0] || '';
+            var moodEmoji = {calm:'😌',anxious:'😰',happy:'😊',angry:'😤',sad:'😢',excited:'⚡'}[topMood] || '⬡';
+            var intensity = Math.min(z.count / 10, 1);
+            var alpha = 0.08 + intensity * 0.18;
+            var circle = L.circle(ll, {
+                radius: 400,
+                color: 'rgba(255,255,255,' + (alpha * 2) + ')',
+                fillColor: 'rgba(255,255,255,' + alpha + ')',
+                fillOpacity: 1,
+                weight: 1,
+                interactive: true
+            }).addTo(map);
+            var popupHtml = '<div style="background:rgba(10,10,14,0.95);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px 16px;min-width:180px;font-family:-apple-system,sans-serif;">' +
+                '<div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);font-weight:700;margin-bottom:8px;">VV NOW · ZONĂ ACTIVĂ</div>' +
+                '<div style="font-size:22px;margin-bottom:6px;">' + moodEmoji + '</div>' +
+                '<div style="font-size:13px;color:#fff;font-weight:700;margin-bottom:4px;">Validată azi · ' + timeStr + '</div>' +
+                '<div style="font-size:11px;color:rgba(255,255,255,0.4);">' + z.count + ' verificări · anonim</div>' +
+                '</div>';
+            circle.bindPopup(popupHtml, { closeButton:false, className:'dark-popup' });
+            _vvNowLayers.push(circle);
+        });
+    }).catch(function(){});
+    setInterval(loadVVNow, 5*60*1000);
+}
+
+// ================================================================
+// PASSIVE NUDGE — LEA te anunta cand esti aproape de o misiune
+// ================================================================
+var _nudgeShown = {};
+
+function startPassiveNudge() {
+    if (!('geolocation' in navigator)) return;
+    setInterval(function() {
+        if (isGhostModeActive()) return;
+        if (!userCurrentLat || !userCurrentLng) return;
+        db.collection('missions').where('status','==','active').limit(10).get().then(function(snap) {
+            snap.forEach(function(doc) {
+                var m = doc.data();
+                if (!m.lat || !m.lng) return;
+                var dist = haversineDistance(userCurrentLat, userCurrentLng, m.lat, m.lng);
+                if (dist < 500 && !_nudgeShown[doc.id]) {
+                    _nudgeShown[doc.id] = true;
+                    showNudge(m.title || 'Misiune disponibilă', Math.round(dist) + 'm · ' + (m.reward || 15) + ' VV', doc.id);
+                }
+                if (dist > 1000) delete _nudgeShown[doc.id];
+            });
+        }).catch(function(){});
+    }, 30000);
+}
+
+function showNudge(title, sub, missionId) {
+    var existing = document.getElementById('vv-nudge');
+    if (existing) existing.remove();
+    var nudge = document.createElement('div');
+    nudge.id = 'vv-nudge';
+    nudge.style.cssText = 'position:fixed;top:env(safe-area-inset-top,20px);left:50%;transform:translateX(-50%) translateY(-120px);' +
+        'background:rgba(10,10,14,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);' +
+        'border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:14px 18px;' +
+        'display:flex;align-items:center;gap:12px;z-index:9000;min-width:280px;max-width:90vw;' +
+        'box-shadow:0 8px 32px rgba(0,0,0,0.6);transition:transform .4s cubic-bezier(.34,1.56,.64,1);cursor:pointer;';
+    nudge.innerHTML = '<div style="width:36px;height:36px;background:rgba(52,199,89,0.15);border:1px solid rgba(52,199,89,0.3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⬡</div>' +
+        '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + title + '</div>' +
+        '<div style="font-size:11px;color:rgba(52,199,89,0.8);margin-top:2px;">' + sub + '</div></div>' +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.25);flex-shrink:0;">LEA</div>';
+    nudge.onclick = function() {
+        nudge.remove();
+        switchTab('missions');
+    };
+    document.body.appendChild(nudge);
+    setTimeout(function(){ nudge.style.transform = 'translateX(-50%) translateY(0)'; }, 50);
+    setTimeout(function(){ nudge.style.transform = 'translateX(-50%) translateY(-120px)'; }, 5000);
+    setTimeout(function(){ nudge.remove(); }, 5500);
+}
